@@ -1,0 +1,48 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-update-the-frontend-to-load-products-and-testimonials-from-the-backend-instead-of-hardcoded-in-memory-constants-while-keeping-the-existing-ui-ux-and-routing-behavior-intact-landing-page-featured-product-cards-and-product-detail-page-by-slug",
+      "featureTitle": "Update the frontend to load products and testimonials from the backend instead of hardcoded in-memory constants, while keeping the existing UI/UX and routing behavior intact (landing page, featured product cards, and product detail page by slug).",
+      "files": [
+        "frontend/src/components/landing/FeaturedProductsSection.tsx",
+        "frontend/src/components/landing/TestimonialsSection.tsx",
+        "frontend/src/data/products.ts",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/ProductDetailPage.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-13"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-frontend-subscribe-section-to-submit-newsletter-signups-to-the-backend-and-continue-showing-the-same-in-app-success-confirmation-behavior-no-external-email-service-integration",
+      "featureTitle": "Update the frontend Subscribe section to submit newsletter signups to the backend and continue showing the same in-app success confirmation behavior (no external email service integration).",
+      "files": [
+        "frontend/src/components/landing/SubscribeSection.tsx",
+        "frontend/src/hooks/useQueries.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-14"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

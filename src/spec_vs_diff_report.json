@@ -1,0 +1,84 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-08T16:53:22.621Z",
+  "summary": "Diff implements frontend fetching for products/testimonials and newsletter subscribe submission hooks/UI states, and adds backend product CRUD + product query/listing + existing inquiry APIs. However, backend support for testimonials and newsletter persistence/admin listing is not evidenced, product schema does not match requested slug/longDescription fields, and upgrade-safe persistence for new datasets is not shown. Several unrequested features (user profiles, product price/id-centric model, UI empty states/skeletons) were added.",
+  "missing_requirements": [
+    {
+      "id": "REQ-10",
+      "requirement": "Backend must persist and serve featured products and testimonials with fields aligned to current frontend usage (products: slug, name, description, image, longDescription optional; testimonials: name/initials/quote or equivalent), and data must be persisted in canister state (not hardcoded in query functions).",
+      "reason": "Backend product type shown lacks required slug and longDescription fields (uses id and price instead), and there is no evidence of any testimonial data model/storage or testimonial query API implementation in backend/main.mo (only frontend calls getAllTestimonials).",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/components/landing/TestimonialsSection.tsx",
+        "frontend/src/data/products.ts"
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "requirement": "Admin-only backend APIs to create/update/delete products and testimonials using existing access control, rejecting non-admin callers.",
+      "reason": "Backend shows admin checks for adding/updating products, but there is no evidence of product deletion, nor any testimonial create/update/delete APIs or testimonial storage; frontend expects getAllTestimonials but backend support is not evidenced.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "requirement": "Newsletter subscription persistence (email + timestamp) with a public API to submit and an admin-only query API to list signups; creation returns a clear success value (e.g., Bool).",
+      "reason": "Frontend calls actor.subscribeToNewsletter(email), but backend/main.mo diff excerpt shows no newsletter signup type/storage, no subscribeToNewsletter method, and no admin-only listing API.",
+      "evidence": [
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/components/landing/SubscribeSection.tsx",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "requirement": "Upgrade-safe persistence for products, testimonials, and newsletter signups (and keep existing inquiry persistence correct), adding backend/migration.mo only if needed.",
+      "reason": "No evidence of stable variables, preupgrade/postupgrade hooks, or migration module for newly added datasets; only in-memory structures are shown (List/Map) and no backend/migration.mo was added.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile management APIs with access-control checks (getCallerUserProfile/getUserProfile/saveCallerUserProfile).",
+      "reason": "BuildRequest focuses on website content (products/testimonials/newsletter/inquiries) and admin controls; user profiles were not requested.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Product schema and APIs centered around numeric id and price (Product includes id: Nat and price: Nat; getProductById; add/update with price).",
+      "reason": "Requested product fields were slug, name, description, image, and optional longDescription; price/id-based lookup was not specified and slug-based stability was preferred.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/landing/FeaturedProductsSection.tsx",
+        "frontend/src/data/products.ts"
+      ]
+    },
+    {
+      "description": "Frontend loading skeletons and explicit empty-state messages for products/testimonials sections.",
+      "reason": "REQ-13 requires not crashing on empty arrays; skeletons/empty-state messaging are additional UX changes not explicitly requested (though compatible).",
+      "evidence": [
+        "frontend/src/components/landing/FeaturedProductsSection.tsx",
+        "frontend/src/components/landing/TestimonialsSection.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.78,
+  "changed_files": [
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/components/landing/FeaturedProductsSection.tsx",
+    "frontend/src/components/landing/SubscribeSection.tsx",
+    "frontend/src/components/landing/TestimonialsSection.tsx",
+    "frontend/src/data/products.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/ProductDetailPage.tsx",
+    "project_state.json"
+  ]
+}

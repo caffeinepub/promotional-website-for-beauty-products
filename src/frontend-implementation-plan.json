@@ -1,0 +1,65 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Frontend: Fetch marketing content (products, testimonials) and submit newsletter signups via backend",
+  "requirements": [
+    {
+      "id": "REQ-13",
+      "summary": "Load featured products, product detail, and testimonials from backend-provided data while keeping existing UI/UX and hash routing intact.",
+      "acceptanceCriteria": [
+        "Featured products section renders from backend-fetched product data.",
+        "Product detail page resolves product data by slug using backend-fetched data (and still supports direct navigation by URL hash).",
+        "Testimonials section renders from backend-fetched testimonial data.",
+        "The site remains functional if the backend returns empty arrays (show a sensible empty state or render nothing without crashing)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add React Query hooks to fetch products and testimonials from the backend actor (e.g., useProductsQuery/useTestimonialsQuery), including basic loading/error handling and safe defaults (empty arrays) to prevent crashes."
+        },
+        {
+          "path": "frontend/src/data/products.ts",
+          "operation": "modify",
+          "description": "Remove hardcoded in-memory product list export; keep only shared product type helpers and/or a pure helper that can resolve a product by slug from a provided list, so UI is driven by backend-fetched data."
+        },
+        {
+          "path": "frontend/src/components/landing/FeaturedProductsSection.tsx",
+          "operation": "modify",
+          "description": "Replace usage of the hardcoded products constant with the new backend-backed query hook; render the same card UI and navigation behavior, and handle empty arrays by rendering no cards (or a minimal, non-breaking empty state)."
+        },
+        {
+          "path": "frontend/src/components/landing/TestimonialsSection.tsx",
+          "operation": "modify",
+          "description": "Replace local hardcoded testimonials array with backend-fetched testimonial data via a new query hook; map backend fields into the existing card layout (name/initials/quote) and render nothing (or a minimal empty state) when the backend returns an empty array."
+        },
+        {
+          "path": "frontend/src/pages/ProductDetailPage.tsx",
+          "operation": "modify",
+          "description": "Replace getProductBySlug() usage with backend-fetched product data (reuse the products query and resolve by slug in-memory); preserve current UX (including returning null or a safe fallback when not found) so direct hash navigation remains supported."
+        }
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "summary": "Wire the Subscribe section to submit newsletter signups to the backend and preserve the existing success confirmation behavior with a simple error state on failure.",
+      "acceptanceCriteria": [
+        "Subscribe form submits email to the backend newsletter-signup API.",
+        "On successful submission, the UI shows the existing success confirmation state (e.g., \"Thank you for subscribing!\") and clears the input.",
+        "On failure, the UI shows a simple error state (without adding third-party integrations)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add a React Query mutation hook (e.g., useSubscribeToNewsletter) that calls the backend actor newsletter signup method and returns a clear success/failure result for the UI."
+        },
+        {
+          "path": "frontend/src/components/landing/SubscribeSection.tsx",
+          "operation": "modify",
+          "description": "Update the form submit handler to call the newsletter signup mutation; on success keep the existing success confirmation UI and clear input; on failure show a simple inline error state while preserving the current layout and copy."
+        }
+      ]
+    }
+  ]
+}

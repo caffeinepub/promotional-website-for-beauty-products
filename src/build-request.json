@@ -1,0 +1,141 @@
+{
+  "kind": "build_request",
+  "title": "Expand Motoko backend to manage all website data (products, testimonials, newsletter, inquiries) with admin controls",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "text": "Extend the Motoko backend (single actor in backend/main.mo) to persist and serve the website’s core content data, beyond contact inquiries, including at minimum: featured products (matching the fields currently used in frontend/src/data/products.ts) and testimonials (matching the fields used in frontend/src/components/landing/TestimonialsSection.tsx). Provide public query APIs to fetch these datasets for the marketing site UI.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend exposes public query methods that return products and testimonials as arrays.",
+        "Product records include slug, name, description, image, and longDescription (optional), aligning with current frontend usage.",
+        "Testimonial records include name/initials/quote (or equivalent fields sufficient to render the current testimonial cards).",
+        "Data is persisted in canister state (not hardcoded in query functions)."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Add admin-only backend APIs to manage (create/update/delete) the website content datasets (products and testimonials) using the existing access control system (authorization/access-control and MixinAuthorization) so only admins can modify site content.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Non-admin callers are rejected (trap) when attempting to create/update/delete products or testimonials.",
+        "Admin callers can create, update, and delete product entries by a stable identifier (e.g., id or slug) without breaking retrieval queries.",
+        "Admin callers can create, update, and delete testimonial entries by a stable identifier (e.g., id)."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Add newsletter subscription persistence to the backend: create a data model that stores newsletter signups (email + timestamp) and implement a public shared API to submit a signup. Also add an admin-only query API to list stored newsletter signups for internal use/testing.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend provides a public method to create a newsletter signup storing at least email and timestamp.",
+        "Backend provides an admin-only method to list newsletter signups.",
+        "Newsletter signup creation returns a clear success value (e.g., Bool) consistent with existing createInquiry behavior."
+      ]
+    },
+    {
+      "id": "REQ-13",
+      "text": "Update the frontend to load products and testimonials from the backend instead of hardcoded in-memory constants, while keeping the existing UI/UX and routing behavior intact (landing page, featured product cards, and product detail page by slug).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Featured products section renders from backend-fetched product data.",
+        "Product detail page resolves product data by slug using backend-fetched data (and still supports direct navigation by URL hash).",
+        "Testimonials section renders from backend-fetched testimonial data.",
+        "The site remains functional if the backend returns empty arrays (show a sensible empty state or render nothing without crashing)."
+      ]
+    },
+    {
+      "id": "REQ-14",
+      "text": "Update the frontend Subscribe section to submit newsletter signups to the backend and continue showing the same in-app success confirmation behavior (no external email service integration).",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Subscribe form submits email to the backend newsletter-signup API.",
+        "On successful submission, the UI shows the existing success confirmation state (e.g., \"Thank you for subscribing!\") and clears the input.",
+        "On failure, the UI shows a simple error state (without adding third-party integrations)."
+      ]
+    },
+    {
+      "id": "REQ-15",
+      "text": "Implement upgrade-safe persistence for newly added backend datasets (products, testimonials, newsletter signups), and ensure existing inquiry persistence remains correct. If an upgrade requires state migration, add backend/migration.mo following the project’s conditional migration policy.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Create backend to manage all data of website"
+        ]
+      },
+      "acceptanceCriteria": [
+        "After a canister upgrade, previously stored products/testimonials/newsletter signups remain available via query APIs.",
+        "If migration is needed, a backend/migration.mo is added and used to preserve/transform existing stored data without data loss.",
+        "Existing inquiry APIs (createInquiry, listInquiries) continue to function as before."
+      ]
+    }
+  ],
+  "constraints": [
+    "Respect the single-actor backend architecture: all Motoko logic lives in backend/main.mo (add backend/migration.mo only if required for upgrade-safe state).",
+    "Do not edit frontend files under frontend/immutablePaths; compose existing UI components instead of modifying their sources.",
+    "Use English for any user-facing text."
+  ],
+  "nonGoals": [
+    "Building a full admin dashboard UI for content management (only backend admin APIs are required unless separately requested).",
+    "Integrating with external databases or third-party email services.",
+    "Changing the site’s overall layout, visual theme, or routing paradigm beyond what is necessary to load data from the backend."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

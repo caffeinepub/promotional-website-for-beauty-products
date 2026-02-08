@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Main application component with hash-based routing that conditionally renders landing page, product detail page, or not-found page based on current route.",
+  "frontend/src/components/landing/HeroSection.tsx": "Hero section component with full-screen background image, headline, subheadline, and CTA button that scrolls to products section.",
+  "frontend/src/components/landing/FeaturedProductsSection.tsx": "Featured products section that fetches and displays products from the backend with loading skeletons and empty state handling while maintaining existing card UI and navigation.",
+  "frontend/src/components/landing/BenefitsSection.tsx": "Benefits section showcasing three key product benefits with icons (natural ingredients, deep hydration, visible results) and decorative icon set display, fixed trailing comma syntax error.",
+  "frontend/src/components/landing/TestimonialsSection.tsx": "Testimonials section that fetches and displays customer reviews from the backend with loading skeletons, empty state handling, and automatic initials generation from author names.",
+  "frontend/src/components/landing/SubscribeSection.tsx": "Newsletter subscription section with email input form that submits to the backend, showing success confirmation, loading state during submission, and error handling.",
+  "frontend/src/components/landing/ContactSection.tsx": "Contact form section with name, email, and message fields that submits inquiries to the backend with loading, success, and error states.",
+  "frontend/src/components/landing/SiteFooter.tsx": "Site footer with brand information, quick navigation links, social media icons, and attribution with caffeine.ai link.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for backend operations including contact inquiries, products, testimonials, and newsletter subscriptions with proper loading states and cache invalidation.",
+  "frontend/src/index.css": "Global styles with OKLCH-based color system using warm beauty-brand palette (rose/terracotta primary, sand/beige backgrounds, soft peach accents) for both light and dark modes.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended theme including Inter font family, custom shadows, and complete OKLCH color token mappings.",
+  "frontend/src/router/useHashRoute.ts": "Hash-based routing utility that parses window.location.hash into route types (home, product, not-found) and provides navigation functions without page reloads.",
+  "frontend/src/data/products.ts": "Product type definitions and helper functions for slug generation, product mapping from backend format, and finding products by slug from a provided list.",
+  "frontend/src/pages/ProductDetailPage.tsx": "Product detail page that fetches products from backend and resolves by slug with loading skeleton, maintaining existing layout and navigation while supporting direct hash navigation.",
+  "frontend/src/pages/NotFoundPage.tsx": "Simple not-found page with centered card layout and a button to navigate back to the homepage."
+}
